@@ -1,0 +1,57 @@
+
+
+#' Read and Combine Parquet Files into a Single Data Frame
+#'
+#' This function reads all Parquet files from a specified folder and combines them into a single data frame.
+#'
+#' @param sub A character string specifying the subfolder within the base folder to look for Parquet files. Default is "cabcm".
+#'
+#' @return A data frame containing the combined data from all Parquet files in the specified subfolder. Each row in the combined data frame has an additional column named `file` indicating the source file of the data.
+#'
+#' @details
+#' The `CABCMParquetRead` function performs the following steps:
+#' \itemize{
+#'   \item Lists all Parquet files in the specified subfolder within the base folder `"/Users/wamclean/Desktop/Lynker/tnc_hf/water_balance/"`.
+#'   \item Reads each Parquet file into a data frame and stores them in a list.
+#'   \item Combines all data frames in the list into a single data frame with an additional column `file` indicating the file from which each row was read.
+#' }
+#'
+#'
+#' @examples
+#' # Read and combine all Parquet files from the "cabcm" subfolder
+#' new_cabcm_data <- CABCMParquetRead()
+#'
+#' # Read and combine all Parquet files from a different subfolder
+#' other_data <- CABCMParquetRead(sub = "another_subfolder")
+#' @export
+
+
+
+# Function to read all parquet files in a folder and bind them into one data frame
+CABCMParquetRead <- function(sub = "cabcm") {
+
+  folder <- "data/water_balance/"
+
+  # List all parquet files in the specified folder
+  file_paths <- list.files(path = glue("{folder}{sub}"), pattern = "\\.parquet$", full.names = TRUE)
+
+  # Create an empty list to store data frames
+  all_dfs <- list()
+
+  # Loop through the files and read the data into a data frame
+  for (file_path in file_paths) {
+    parquet_data <- read_parquet(file_path)
+
+    # Extract the variable name from the file path
+    file_name <- tools::file_path_sans_ext(basename(file_path))
+
+    # Append the data frame to the list
+    all_dfs[[file_name]] <- parquet_data
+  }
+
+  # Bind all the data frames together
+  final_df <- bind_rows(all_dfs, .id = "file")
+
+  return(final_df)
+}
+

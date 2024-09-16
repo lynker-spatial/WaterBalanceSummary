@@ -1,0 +1,41 @@
+Package: WaterBalanceSummary
+Type: Package
+Title: Water Balance Summary
+Version: 0.1.0
+Maintainer: Billy McLean <wamclean3@gmail.com>
+Description: Create water balance plots, seasonal error plots, compare well water level with soil moisture from aggregated meteorological data.
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Authors@R: c(person("Billy", "McLean", 
+             role = c("aut", "cre"), 
+             email = "wamclean3@gmail.com"),
+             person("TNC", role = "fnd"),
+             person("Lynker", role = "fnd"))
+BugReports: https://github.com/wamclean/WaterBalanceSummary/issues
+URL: https://github.com/wamclean/WaterBalanceSummary
+Imports:
+  arrow,
+  aws.s3,
+  aws.signature,
+  cowplot,
+  dplyr,
+  ggplot2,
+  ggrepel,
+  ggspatial,
+  glue,
+  grid,
+  gridExtra,
+  lubridate,
+  purrr,
+  RColorBrewer,
+  scales,
+  sf,
+  stats,
+  stringr,
+  tidyr,
+  tools
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+License: MIT + file LICENSE
