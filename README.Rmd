@@ -1,0 +1,56 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# WaterBalanceSummary
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+The goal of WaterBalanceSummary is to create water balance plots, seasonal error plots, compare well water level with soil moisture from aggregated meteorological data.
+
+## Installation
+
+You can install the development version of WaterBalanceSummary from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("lynker-spatial/WaterBalanceSummary")
+```
+
+#### You can use this package to produce detailed figures for analysis of your model compared to real world data.
+
+```{r, echo=FALSE}
+
+knitr::include_graphics(c("vignettes/images/CorrPlotExample.png", "vignettes/images/WWLvsSTR_Example.png"))
+
+```
+
+#### To visualize the water balance of a basin
+
+```{r, echo=FALSE}
+
+knitr::include_graphics("vignettes/images/ExampleBalancePlot.png")
+
+```
+
+#### And to locate where model data and real world data do and do not align
+
+```{r, echo=FALSE}
+
+knitr::include_graphics("vignettes/images/ExampleSeasonPlot.png")
+
+```
+

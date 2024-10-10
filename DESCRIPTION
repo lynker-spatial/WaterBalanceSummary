@@ -3,7 +3,7 @@ Type: Package
 Title: Water Balance Summary
 Version: 0.1.0
 Maintainer: Billy McLean <wamclean3@gmail.com>
-Description: Create water balance plots, seasonal error plots, compare well water level with soil moisture from baggregated meteorological data.
+Description: Create water balance plots, seasonal error plots, compare well water level with soil moisture from aggregated meteorological data.
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
