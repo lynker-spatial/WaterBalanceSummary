@@ -174,7 +174,7 @@ file into a data frame, stores them in a list, and combines all data
 frames in the list into a single data frame with an additional column
 `file` indicating the file from which each row was read.</p>
 <p>The end product should look like this:</p>
-<p><img src="images/clipboard-376625855.png"></p>
+<p><img src="images%2Fnew_cabcm_data.png"></p>
 </div>
 <div class="section level5">
 <h5 id="pull-terraclimate-data">
@@ -202,9 +202,9 @@ cabcm_delta_str or terra_delta_str.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#model_clean(new_cabcm_data)</span></span></code></pre></div>
 <p>From this:</p>
-<p><img src="images/clipboard-3099273279.png" width="425"></p>
+<p><img src="images%2Fnew_cabcm_data.png" width="425"></p>
 <p>To this:</p>
-<p><img src="images/clipboard-3493062127.png" width="427"></p>
+<p><img src="images%2Fmodel_delta_str.png" width="427"></p>
 </div>
 <div class="section level5">
 <h5 id="process-model-data">
@@ -226,7 +226,7 @@ the percent error against PPT. It then joins the seasonal data with the
 split into four seasonal datasets. The final output is a list containing
 seasonal data that can be used for generating Percent Error Plots based
 on the season.</p>
-<p><img src="images/clipboard-3826281978.png"></p>
+<p><img src="images%2Fresult_data.png"></p>
 <p>In addition to prepping the data for Seasonal Error plot, the
 function assigns the widened data, such as “cabcm_data_wide” to the
 global environment to be used in the balance_data() function below and
@@ -278,7 +278,7 @@ titles and captions based on the data source, be it CABCM, Terra, or
 process_data() function above. It formats the data so that it can be
 used to create the Water Balance Plots.</p>
 <p>The new data should look like this:</p>
-<p><img src="images/clipboard-1274485698.png"></p>
+<p><img src="images%2Fwater_balance_output.png"></p>
 </div>
 <div class="section level5">
 <h5 id="water-balance-plots">
