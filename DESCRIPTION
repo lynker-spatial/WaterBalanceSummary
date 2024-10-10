@@ -13,7 +13,7 @@ Authors@R: c(person("Billy", "McLean",
              person("TNC", role = "fnd"),
              person("Lynker", role = "fnd"))
 BugReports: https://github.com/wamclean/WaterBalanceSummary/issues
-URL: https://github.com/wamclean/WaterBalanceSummary
+URL: https://github.com/wamclean/WaterBalanceSummary, https://wamclean.github.io/WaterBalanceSummary/
 Imports:
   arrow,
   aws.s3,
@@ -36,6 +36,9 @@ Imports:
   tidyr,
   tools
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 License: MIT + file LICENSE
+VignetteBuilder: knitr

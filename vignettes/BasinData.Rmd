@@ -1,0 +1,178 @@
+---
+title: "BasinData"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{BasinData}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(WaterBalanceSummary)
+```
+
+This workflow is built to compare Modeled Soil Moisture Storage against
+Observed Well Water Level.
+
+Note: As of 9/2/2024 the package is formatted to process CABCM and
+TerraClimate data. As NextGen data becomes available any adjustments
+that need be made to allow it to work within this flow will be made.
+Until that point, this document will refer to CABCM and TerraClim data
+with the implication that NextGen could be substituted for either at any
+point.
+
+# **Comparing Model and Observed Soil Moisture, Correlating the two, Producing plots and maps for visualization.**
+
+This workflow assumes access to the tnc-dangermond bucket and its
+folders which contain the updated site data for the Dangermond Preserve.
+
+Similar to [WaterBalance](docs/articles/WaterBalance.html), to start you
+need Site Location and Basin Data
+
+#### Site Data
+
+The assumption is that you already have site data that fits this format:
+
+![](images/SiteDataExample.png){width="1097"}
+
+#### Divides
+
+You also need to bring in your Basin Divides for mapping purposes.
+![](images/HydrofabricExample.png)
+
+To get our data from the tnc-dangermond bucket we will need to pull the
+parquet data from S3 and organize it into a list.
+
+**Note**: If you already have your site data, and it is formatted like
+the output of CleanWells(), you can skip straight to the Change In
+Storage From the Model step.
+
+Intersect the Site Data and Divides to get a dataframe of all your
+divides with all the sites that they contain.
+
+```{r}
+#dangermond_sites <- st_intersection(All_Sites_sf, NewDivides)
+```
+
+![](images/dangermond_sitesExample.png)
+
+#### Clean up the data a bit.
+
+The TNC Site names get wonky so replacing any spaces with underscores,
+filtering out NA values, and just pulling out the Site and Divide (to be
+used later) fields will help.
+
+Additionally, creating a SiteBasins df that is just the distinct Basin
+IDs is necessary for the pull. This will be fixed in a later update
+
+```{r}
+##Join Divides and Sites
+#ActiveDivides <- dangermond_sites %>% 
+#  filter(!is.na(SiteName)) %>% 
+#  mutate(Site = str_replace_all(SiteName, "_", "")) %>% 
+#  dplyr::select(Site, Divide, has_flowline)
+
+
+#Site Basins
+#SiteBasins <- ActiveDivides %>% 
+#  dplyr::select(Divide) %>% 
+#  distinct(Divide)
+```
+
+### Clean Well Data
+
+CleanWells()
+
+This function filters, transforms, and processes well water level data
+from a combined dataset. It prepares the data for mapping and analysis
+by calculating changes in well water levels, joining with basin
+information, and summarizing the data on a monthly basis.
+
+The output should look like this, time series data for all divides
+containing sites that are measuring well water level, and the average
+change in well water level from month to month:
+
+![](images/monthly_basin_averagesExample.png)
+
+### Change In Storage From the Model
+
+Now that we have the site data, we can use the (model)\_delta_str file
+from the WaterBalance workflow and compare the two.
+
+The Correlation() function calculates the correlation between well water
+level changes and storage changes (e.g., from cabcm\_ or
+terra_delta_str) for different basins. It joins the data, computes
+correlation statistics, and prepares the data for further analysis.
+
+CRITICAL:
+
+Correlation() copies "model_correlation_by_divide" to the package
+environment, this will feed straight into ModelCorrMap(). You will still
+need the scatterplot from ModelScatter() though so don't skip ahead.
+
+```{r}
+#cabcm_dangermond_join <- Correlation(x = cabcm_delta_str, y = monthly_basin_average)
+
+```
+
+The output should look like this, it even adds convenient plot titles!
+
+![](images/CorrelationExample.png)
+
+I've called this dataframe cabcm_dangermond_join, no need to get too
+fancy.
+
+Now that our data is looking good we can finally make some plots
+
+Plot_WWLvsSTR() does exactly what you think it will. It plots the change
+in well water level "mean_change_mm" against deltaSTR from your model
+data.
+
+```{r}
+#Cabcm_Plot <- Plot_WWLvsSTR(x = cabcm_dangermond_join)
+```
+
+![](images/WWLvsSTR_Example.png)
+
+This is a great visualization of the accuracy of the model to the basin
+in terms of both timing and magnitude of changes in well water level vs
+modeled changes in soil moisture.
+
+If we want more detail, making a scatterplot of the two should help, and
+we can then attach that to a map to make it an even more powerful visual
+aid.
+
+### ModelScatter()
+
+ModelScatter() uses the same data as above, but makes a scatterplot
+instead.
+
+```{r}
+#ModelScatterPlot <- ModelScatter(x = cabcm_dangermond_join)
+```
+
+![](images/ModelScatter_Example.png)
+
+This is good, it shows us the general shape of the data and the
+correlation is easily visible as part of the title. But how does it
+relate spatially to our basin?
+
+ModelCorrMap() uses model_correlation_by_divide, which is an output of
+Correlation() along with the scatter plot we just produced to create a
+side-by-side plot of the two.
+
+```{r}
+#Corr_Map <- ModelCorrMap(x = model_correlation_by_divide, y = ModelScatterPlot)
+```
+
+![](images/CorrPlotExample.png)

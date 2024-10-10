@@ -4,16 +4,24 @@
 \alias{TerraClimParquetRead}
 \title{Read and Combine Terra Climate Parquet Files into a Single Data Frame}
 \usage{
-TerraClimParquetRead(sub = "terraclim")
+TerraClimParquetRead(
+  sub = "terraclim",
+  bucket = "tnc-dangermond",
+  prefix = "water_balance/v2/"
+)
 }
 \arguments{
 \item{sub}{A character string specifying the subfolder within the base folder to look for Parquet files. Default is "terraclim".}
+
+\item{bucket}{A string representing the S3 bucket name.}
+
+\item{prefix}{A string representing the prefix (path) within the S3 bucket where the Parquet files are stored.}
 }
 \value{
 A data frame containing the combined data from all Parquet files in the specified subfolder. The `var` column is standardized with values "run" for "q" and "str" for "soil".
 }
 \description{
-This function reads all Parquet files from a specified subfolder related to Terra Climate data and combines them into a single data frame. It also performs some specific transformations on the `var` column to standardize variable names.
+This function reads all Parquet files from a specified S3 bucket related to Terra Climate data and combines them into a single data frame. It also performs some specific transformations on the `var` column to standardize variable names.
 }
 \details{
 The `TerraClimParquetRead` function performs the following steps:

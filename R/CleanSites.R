@@ -25,12 +25,11 @@
 
 CleanSites <- function(x){
 
-  divide_id <- NewDivides <- dangermond_sites <- NULL
-  #Create layers for the divides, flowpaths, and the sites that intersect the divides
-  assign("NewDivides", st_read(dsn = "/Users/wamclean/Desktop/Lynker/tnc_hf/nextgen_hydorfabric.gpkg", layer = "divides") %>% mutate(divide_id = as.character(divide_id)) %>%
+  divide_id <- NewDivides <- NULL
+  assign("NewDivides", st_read(dsn = "/Users/wamclean/Desktop/Lynker/jldp_ngen_nhdhr.gpkg", layer = "divides") %>% mutate(divide_id = as.character(divide_id)) %>%
            st_transform(crs = 4269), envir = WaterBalanceSummaryEnv)
 
-  assign("dangermond_sites", st_intersection(x, NewDivides), envir = WaterBalanceSummaryEnv)
-
-  assign("dangermond_sites", st_join(dangermond_sites, NewDivides), envir = WaterBalanceSummaryEnv)
+  # assign("dangermond_sites", st_intersection(x, NewDivides), envir = WaterBalanceSummaryEnv)
+  #
+  # assign("dangermond_sites", st_join(dangermond_sites, NewDivides), envir = WaterBalanceSummaryEnv)
 }

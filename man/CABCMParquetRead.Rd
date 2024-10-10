@@ -4,16 +4,24 @@
 \alias{CABCMParquetRead}
 \title{Read and Combine Parquet Files into a Single Data Frame}
 \usage{
-CABCMParquetRead(sub = "cabcm")
+CABCMParquetRead(
+  sub = "cabcm",
+  bucket = "tnc-dangermond",
+  prefix = "water_balance/v2/"
+)
 }
 \arguments{
 \item{sub}{A character string specifying the subfolder within the base folder to look for Parquet files. Default is "cabcm".}
+
+\item{bucket}{A string representing the S3 bucket name.}
+
+\item{prefix}{A string representing the prefix (path) within the S3 bucket where the Parquet files are stored.}
 }
 \value{
 A data frame containing the combined data from all Parquet files in the specified subfolder. Each row in the combined data frame has an additional column named `file` indicating the source file of the data.
 }
 \description{
-This function reads all Parquet files from a specified folder and combines them into a single data frame.
+This function reads all Parquet files from a specified S3 bucket and combines them into a single data frame.
 }
 \details{
 The `CABCMParquetRead` function performs the following steps:
