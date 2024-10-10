@@ -120,7 +120,7 @@ indicating the file from which each row was read.
 
 The end product should look like this:
 
-![](images/clipboard-376625855.png)
+![](images/new_cabcm_data.png)
 
 #### **Pull TerraClimate Data**
 
@@ -151,11 +151,11 @@ cabcm_delta_str or terra_delta_str.
 
 From this:
 
-![](images/clipboard-3099273279.png){width="425"}
+![](images/new_cabcm_data.png){width="425"}
 
 To this:
 
-![](images/clipboard-3493062127.png){width="427"}
+![](images/model_delta_str.png){width="427"}
 
 #### **Process Model Data**
 
@@ -182,7 +182,7 @@ four seasonal datasets. The final output is a list containing seasonal
 data that can be used for generating Percent Error Plots based on the
 season.
 
-![](images/clipboard-3826281978.png)
+![](images/result_data.png)
 
 In addition to prepping the data for Seasonal Error plot, the function
 assigns the widened data, such as "cabcm_data_wide" to the global
@@ -236,7 +236,7 @@ used to create the Water Balance Plots.
 
 The new data should look like this:
 
-![](images/clipboard-1274485698.png)
+![](images/water_balance_output.png)
 
 #### **Water Balance Plots**
 
