@@ -1,0 +1,19 @@
+url: ~
+
+home:
+  title: NOAA's Enterprise Hydrofabric Solution
+template:
+  bootstrap: 5
+  bootswatch: litera
+development:
+  mode: auto
+
+authors:
+   Billy McLean:
+     href: https://wamclean.github.io/
+   TNC:
+     html: "<img src='man/figures/TNCLogo.png' width='100' alt='TNC'/>"
+     href: "https://www.nature.org/en-us/"
+   Lynker:
+     html: "<img src='man/figures/Lynker-Logo.png' width='100' alt='Lynker'/>"
+     href: "https://lynker-spatial.com/"
