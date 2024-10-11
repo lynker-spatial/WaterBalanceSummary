@@ -197,10 +197,10 @@ convert this from total storage to the change in storage between two
 time steps.</p>
 <p>model_clean() separates out the soil moisture storage “str” from the
 “var” field and calculates day to day change in storage before joining
-that data back into the primary dataset for analysis. The output is
-cabcm_delta_str or terra_delta_str.</p>
+that data back into the primary dataset for analysis. Assign your ouput
+to [model name]_delta_str</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#model_clean(new_cabcm_data)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#cabcm_delta_str &lt;- model_clean(new_cabcm_data)</span></span></code></pre></div>
 <p>From this:</p>
 <p><img src="images%2Fnew_cabcm_data.png" width="425"></p>
 <p>To this:</p>
@@ -217,7 +217,9 @@ Moisture Storage, we can better balance our system by finding error with
 the following equation.</p>
 <p>ERR = ppt - aet - rch - run - str</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#result_cabcm &lt;- process_model_data(cabcm_delta_str, NewDivides)</span></span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span></span>
+<span><span class="co">#result_cabcm &lt;- process_model_data(cabcm_delta_str, NewDivides)</span></span></code></pre></div>
 <p>The process_model_data() function does this and more.</p>
 <p>It widens the dataframe, calculates the error for each timestamp,
 assigns seasons based on month, calculates average error per season, and
@@ -227,10 +229,6 @@ split into four seasonal datasets. The final output is a list containing
 seasonal data that can be used for generating Percent Error Plots based
 on the season.</p>
 <p><img src="images%2Fresult_data.png"></p>
-<p>In addition to prepping the data for Seasonal Error plot, the
-function assigns the widened data, such as “cabcm_data_wide” to the
-global environment to be used in the balance_data() function below and
-create our water balance plots.</p>
 </div>
 <div class="section level5">
 <h5 id="plot-seasons">
@@ -268,7 +266,14 @@ very appealing visually.</p>
 output from <code><a href="../reference/process_model_data.html">process_model_data()</a></code> and customizes the plot
 titles and captions based on the data source, be it CABCM, Terra, or
 (pending) NextGen</p>
-<p><img src="images%2FExampleSeasonPlot.png"></p>
+<p><img src="images%2FExampleSeasonPlot.png"> ### <strong>Wide
+Data()</strong> We need to make the data wide before we can balance it
+and use it to create our water balance plot. This can be done with the
+widen_model_data() function</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#cabcm_data_wide &lt;- widen_model_data(cabcm_delta_str)</span></span></code></pre></div>
+<p>use cabcm_delta_str as the x value and feed the output right into
+balance_data() below</p>
 </div>
 <div class="section level5">
 <h5 id="balance-data">
@@ -287,7 +292,7 @@ used to create the Water Balance Plots.</p>
 <p>CreateWaterBalancePlot() uses the output of balance_data(), terra_ or
 cabcm_long_balance, and creates a water balance plot comparing the
 inputs and outputs of the system.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#combined_plot &lt;- CreateWaterBalancePlot(x = terra_long_balance)</span></span></code></pre></div>
 <p><img src="images%2FExampleBalancePlot.png"></p>
 </div>
