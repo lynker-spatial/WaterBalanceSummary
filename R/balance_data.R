@@ -17,7 +17,8 @@
 #'   \item **Filter and Adjust Data**: Filters the data to keep only the relevant variables and multiplies values for specific variables by -1 to facilitate subtraction from `ppt`.
 #'   \item **Save to Global Environment**: Depending on the presence of the `rch` variable, the function saves the processed data to the global environment with an appropriate name for future use.
 #' }
-#'
+#' 
+#'@export
 
 balance_data <- function(x){
 

@@ -31,10 +31,3 @@ The `CABCMParquetRead` function performs the following steps:
   \item Combines all data frames in the list into a single data frame with an additional column `file` indicating the file from which each row was read.
 }
 }
-\examples{
-# Read and combine all Parquet files from the "cabcm" subfolder
-new_cabcm_data <- CABCMParquetRead()
-
-# Read and combine all Parquet files from a different subfolder
-other_data <- CABCMParquetRead(sub = "another_subfolder")
-}

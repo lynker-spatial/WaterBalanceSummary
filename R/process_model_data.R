@@ -39,11 +39,6 @@ process_model_data <- function(data, NewDivides) {
       mutate(ERR = ppt - aet - run - str)
   }
 
-  if ("rch" %in% names(data_wide)) {
-    assign("cabcm_data_wide", data_wide, envir = WaterBalanceSummaryEnv)
-  } else {
-    assign("terra_data_wide", data_wide, envir = WaterBalanceSummaryEnv)
-  }
 
   # Step 2: Define get_season function
   get_season <- function(month) {

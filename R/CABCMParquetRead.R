@@ -19,12 +19,6 @@
 #' }
 #'
 #'
-#' @examples
-#' # Read and combine all Parquet files from the "cabcm" subfolder
-#' new_cabcm_data <- CABCMParquetRead()
-#'
-#' # Read and combine all Parquet files from a different subfolder
-#' other_data <- CABCMParquetRead(sub = "another_subfolder")
 #' @export
 
 
