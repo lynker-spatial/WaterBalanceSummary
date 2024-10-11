@@ -18,7 +18,7 @@
 #'   \item For data points where `var` is "str", calculates the day-to-day change in soil moisture storage.
 #'   \item Renames the calculated changes and combines this cleaned data with the original dataset.
 #' }
-#'
+#'@export
 
 
 
