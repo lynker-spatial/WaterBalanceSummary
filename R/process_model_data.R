@@ -16,7 +16,7 @@
 #'   \item **Calculate Seasonal Error**: Computes average seasonal error and percentage error.
 #'   \item **Join and Split**: Joins the error data with `NewDivides`, and splits the data into seasonal dataframes.
 #' }
-#'
+#'@export
 
 
 
