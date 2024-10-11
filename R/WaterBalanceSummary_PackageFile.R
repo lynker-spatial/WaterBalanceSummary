@@ -7,8 +7,8 @@
 #' @importFrom ggrepel geom_label_repel
 #' @importFrom ggspatial annotation_scale annotation_north_arrow north_arrow_fancy_orienteering annotation_map_tile
 #' @importFrom glue glue
-#' @importFrom grid grid.draw grid.newpage
-#' @importFrom gridExtra grid.arrange
+#' @importFrom grid grid.draw grid.newpage grid.text gpar textGrob
+#' @importFrom gridExtra grid.arrange arrangeGrob
 #' @importFrom lubridate as_date month
 #' @importFrom purrr map
 #' @importFrom RColorBrewer brewer.pal

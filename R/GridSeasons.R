@@ -33,9 +33,9 @@ GridSeasons <- function(result){
   
   # Dynamically assign a figure caption based on the input data
   figurecaption1 <- dplyr::case_when(
-    "cabcm_v8" %in% source_value ~ "Percent error in non-coastal divides of the Dangermond Preserve. Error is \nfound by solving PPT - AET - RCH - RUN - ∆STR = ERR, averaged to a monthly basis, and recalculated \nas a percentage of PPT. Extreme values in Summer months are attributed to low rainfall.",
+    "cabcm_v8" %in% source_value ~ "Percent error in non-coastal divides of the Dangermond Preserve. Error is \nfound by solving PPT - AET - RCH - RUN - DeltaSTR = ERR, averaged to a monthly basis, and recalculated \nas a percentage of PPT. Extreme values in Summer months are attributed to low rainfall.",
     "terraclim" %in% source_value ~ "Percent error in non-coastal divides of the Dangermond Preserve. Error is
-found by solving PPT - AET - RUN - ∆STR = ERR, averaged to a monthly basis, and recalculated
+found by solving PPT - AET - RUN - DeltaSTR = ERR, averaged to a monthly basis, and recalculated
 as a percentage of PPT.",
     TRUE ~ "NEXTGEN CAPTION PENDING"
   )

@@ -15,6 +15,7 @@
 #'   \item **Visualization**: Plots the spatial data with `percent_error` values visualized using a gradient color scale from white to dark red.
 #'   \item **Title**: Sets the plot title to the provided `season_name`.
 #' }
+#' @export
 
 
 

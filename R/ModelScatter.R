@@ -16,6 +16,9 @@
 #' }
 #'
 #' @return A `ggplot` object showing the scatter plot comparing well water levels and model storage changes.
+#' 
+#' 
+#' @export
 
 
 

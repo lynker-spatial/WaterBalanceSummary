@@ -19,7 +19,7 @@
 #'   \item **Color Mapping**: Uses custom color palettes to differentiate between various variables.
 #'   \item **Plot Combination**: Combines the faceted and total water balance plots into a single grid layout.
 #' }
-#'
+#'@export
 
 
 

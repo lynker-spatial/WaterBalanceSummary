@@ -20,6 +20,9 @@
 #'
 #' @return A combined `ggplot` object with the correlation map and scatter plot side by side.
 #'
+#'
+#'@export
+
 
 
 

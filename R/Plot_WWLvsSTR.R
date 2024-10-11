@@ -17,7 +17,7 @@
 #' }
 #'
 #' @return A `ggplot` object showing the bar plot with well water levels and model storage changes.
-#'
+#'@export
 
 
 Plot_WWLvsSTR <- function(x){
