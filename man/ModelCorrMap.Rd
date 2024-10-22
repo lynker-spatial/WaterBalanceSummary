@@ -4,7 +4,7 @@
 \alias{ModelCorrMap}
 \title{Create a Map of Correlations Between Well Water Level and Model Recharge}
 \usage{
-ModelCorrMap(x = model_correlation_by_divide, y = ModelScatterPlot)
+ModelCorrMap(x, y = ModelScatterPlot, z = NewDivides)
 }
 \arguments{
 \item{x}{A data frame resulting from the `Correlation()` function, containing:
@@ -15,6 +15,8 @@ ModelCorrMap(x = model_correlation_by_divide, y = ModelScatterPlot)
 
 \item{y}{A `ggplot` object produced by the `ModelScatter` function, representing the scatter plot
 of well water level change vs. model recharge.}
+
+\item{z}{A spatial data frame (sf object) with divide information, including the `divide_id` column}
 }
 \value{
 A combined `ggplot` object with the correlation map and scatter plot side by side.

@@ -123,10 +123,8 @@ This will be used in the next function as well.
 Now that we have the site data, we can use the (model)\_delta_str file
 from the WaterBalance workflow and compare the two.
 
-The Correlation() function calculates the correlation between well water
-level changes and storage changes (e.g., from cabcm\_ or
-terra_delta_str) for different basins. It joins the data, computes
-correlation statistics, and prepares the data for further analysis.
+The JoinHydroData() function merges well water level data with streamflow data for further analysis. The streamflow data is filtered to include only non-negative values and specific date ranges. The function limits the data to basins present in the `UniqueDivides` dataset.
+
 
 CRITICAL:
 
@@ -135,15 +133,22 @@ environment, this will feed straight into ModelCorrMap(). You will still
 need the scatterplot from ModelScatter() though so don't skip ahead.
 
 ```{r}
-#cabcm_dangermond_join <- Correlation(x = cabcm_delta_str, y = monthly_basin_average)
+#cabcm_dangermond_join <- JoinHydroData(x = cabcm_delta_str, y = monthly_basin_average, y = UniqueDivides)
 
 ```
+
+Next you can use the Correlation() function, which computes the correlation between changes in well water levels and streamflow for each divide (basin). It calculates standard deviations of well water levels and streamflow, computes correlation coefficients, and merges these correlations back into the original dataset.
+
+```{r}
+#cabcm_corr_join <- Correlation(x = cabcm_dangermond_join)
+```
+
 
 The output should look like this, it even adds convenient plot titles!
 
 ![](images/CorrelationExample.png)
 
-I've called this dataframe cabcm_dangermond_join, no need to get too
+I've called this dataframe cabcm_corr_join, no need to get too
 fancy.
 
 Now that our data is looking good we can finally make some plots
@@ -153,7 +158,9 @@ in well water level "mean_change_mm" against deltaSTR from your model
 data.
 
 ```{r}
-#Cabcm_Plot <- Plot_WWLvsSTR(x = cabcm_dangermond_join)
+#cabcm_Plot <- Plot_WWLvsSTR(x = cabcm_dangermond_join)
+
+#cabcm_Plot
 ```
 
 ![](images/WWLvsSTR_Example.png)
@@ -172,7 +179,7 @@ ModelScatter() uses the same data as above, but makes a scatterplot
 instead.
 
 ```{r}
-#ModelScatterPlot <- ModelScatter(x = cabcm_dangermond_join)
+#ModelScatterPlot <- ModelScatter(x = cabcm_corr_join)
 ```
 
 ![](images/ModelScatter_Example.png)

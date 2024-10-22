@@ -2,26 +2,31 @@
 % Please edit documentation in R/Correlation.R
 \name{Correlation}
 \alias{Correlation}
-\title{Calculate Correlation Between Well Water Level Change and Soil Moisture Storage Change}
+\title{Calculate Correlation Between Well Water Level and Streamflow Data}
 \usage{
-Correlation(x, y = monthly_basin_average)
+Correlation(x)
 }
 \arguments{
-\item{x}{A data frame containing storage change data with columns including `var`, `value`, `date`, and `divide_id`. Defaults to `cabcm_delta_str` or `terra_delta_str` for different datasets.}
-
-\item{y}{A data frame with monthly averages of well water level changes, typically produced by the `CleanWells` function. Defaults to `monthly_basin_average`.}
+\item{x}{A data frame containing columns for `Divide`, `mean_change_mm` (change in well water level), and `deltaSTR` (change in streamflow).}
 }
 \value{
-A data frame with the following columns:
+A data frame where correlation coefficients between well water level changes and streamflow are computed for each divide. The output includes:
 \describe{
   \item{Divide}{The divide ID.}
-  \item{date}{The date of the observation.}
-  \item{mean_change_mm}{The mean change in well water level in millimeters.}
-  \item{deltaSTR}{The change in storage from the storage change data.}
-  \item{correlation}{The correlation coefficient between `mean_change_mm` and `deltaSTR`.}
-  \item{plot_titles}{Titles for plots including divide ID and correlation coefficient.}
+  \item{correlation}{The correlation coefficient between well water level changes and streamflow for each divide.}
+  \item{plot_titles}{A character column containing plot titles with divide information and the rounded correlation values.}
 }
 }
 \description{
-This function calculates the correlation between well water level changes and storage changes (e.g., from cabcm_ or terra_delta_str) for different basins. It joins the data, computes correlation statistics, and prepares the data for further analysis.
+This function computes the correlation between changes in well water levels and streamflow for each divide (basin). It calculates standard deviations of well water levels and streamflow, computes correlation coefficients, and merges these correlations back into the original dataset.
+}
+\details{
+The `Correlation` function performs the following steps:
+\itemize{
+  \item Groups the input data by `Divide`.
+  \item Computes the standard deviations of well water level changes (`mean_change_mm`) and streamflow (`deltaSTR`) for each divide.
+  \item Calculates the correlation between these variables for each divide, handling cases where standard deviations are zero by returning `NA` for the correlation.
+  \item Merges the calculated correlation values back into the original dataset.
+  \item Creates a `plot_titles` column with divide information and the rounded correlation value for plotting purposes.
+}
 }
