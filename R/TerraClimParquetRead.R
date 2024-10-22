@@ -17,6 +17,7 @@
 #'   \item Combines all data frames in the list into a single data frame with an additional column `file` indicating the file from which each row was read.
 #'   \item Transforms the `var` column to standardize variable names, changing "q" to "run" and "soil" to "str".
 #' }
+#' @export
 
 
 # Function to read all parquet files in a folder and bind them into one data frame

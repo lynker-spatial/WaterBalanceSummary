@@ -4,7 +4,7 @@
 \alias{CleanWells}
 \title{Clean and Process Well Water Level Data}
 \usage{
-CleanWells(x = all_combined_data, y = ActiveDivides)
+CleanWells(x, y)
 }
 \arguments{
 \item{x}{A data frame containing well water level data. Defaults to `all_combined_data`.}

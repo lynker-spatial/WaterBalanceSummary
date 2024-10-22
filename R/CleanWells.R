@@ -17,7 +17,7 @@
 #' @export
 
 
-CleanWells <- function(x = all_combined_data, y = ActiveDivides){
+CleanWells <- function(x, y){
 
 
 all_combined_data <- ActiveDivides <- site <- Site <- well_water_level <- day_to_day_change <- day_to_day_change_mm <- well_water_level_ft <- Divide <- YearMonth <- mean_change_mm <- NULL
@@ -55,7 +55,7 @@ all_combined_data <- ActiveDivides <- site <- Site <- well_water_level <- day_to
     ungroup() %>%
     mutate(day_to_day_change_mm = day_to_day_change_mm * 304.8)
 
-  #Join change in WWL and the ActivdeDivides sf to prepare for mapping, output is monthly_basin_average and UniqueDivides
+  #Join change in WWL and the ActiveDivides sf to prepare for mapping, output is monthly_basin_average
 
   WellData_Basins <- left_join(change_in_WWL, y)
 
@@ -72,14 +72,6 @@ all_combined_data <- ActiveDivides <- site <- Site <- well_water_level <- day_to
     filter(date <= "2019-09-01") %>%
     ungroup() %>%
     dplyr::select(Divide, date, mean_change_mm)
-
-  #Create a list of divides containing sites, this will be utilized in creating the final map
-
-  UniqueDivides <- WellData_Basins %>%
-    distinct(Divide)
-
-  assign("UniqueDivides", WellData_Basins %>%
-           distinct(Divide), envir = WaterBalanceSummaryEnv)
 
   return(monthly_basin_average)
 }

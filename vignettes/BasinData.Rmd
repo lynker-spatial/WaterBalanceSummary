@@ -93,6 +93,10 @@ IDs is necessary for the pull. This will be fixed in a later update
 
 CleanWells()
 
+```{r}
+#monthly_basin_average <- CleanWells(x = all_combined_data, y = ActiveDivides)
+```
+
 This function filters, transforms, and processes well water level data
 from a combined dataset. It prepares the data for mapping and analysis
 by calculating changes in well water levels, joining with basin
@@ -103,6 +107,16 @@ containing sites that are measuring well water level, and the average
 change in well water level from month to month:
 
 ![](images/monthly_basin_averagesExample.png)
+
+After Running CleanWells() you should also create a UniqueDivides
+dateframe
+
+This will be used in the next function as well.
+
+```{r}
+  UniqueDivides <- monthly_basin_average %>%
+    distinct(Divide)
+```
 
 ### Change In Storage From the Model
 
