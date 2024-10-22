@@ -29,7 +29,7 @@
 
 ModelCorrMap <- function(x, y = ModelScatterPlot, z = NewDivides){
   
-  ModelScatterPlot <- NewDivides <- divide_id <- geom <- correlation <- Divide <- toid <- type <- ds_id <- areasqkm <- id <- lengthkm <- tot_drainage_areasqkm <- has_flowline <- pos_neg <- geometry <- fill_var <- All_Sites_sf <- NULL
+  ModelScatterPlot <- NewDivides <- divide_id <- geom <- correlation <- Divide <- toid <- type <- ds_id <- areasqkm <- id <- lengthkm <- tot_drainage_areasqkm <- has_flowline <- pos_neg <- geometry <- fill_var <- NULL
   
   z <- z %>% 
     rename(Divide = divide_id, geometry = geom)
