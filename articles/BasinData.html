@@ -134,6 +134,8 @@ update</p>
 <h4 id="clean-well-data">Clean Well Data<a class="anchor" aria-label="anchor" href="#clean-well-data"></a>
 </h4>
 <p>CleanWells()</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#monthly_basin_average &lt;- CleanWells(x = all_combined_data, y = ActiveDivides)</span></span></code></pre></div>
 <p>This function filters, transforms, and processes well water level
 data from a combined dataset. It prepares the data for mapping and
 analysis by calculating changes in well water levels, joining with basin
@@ -142,6 +144,12 @@ information, and summarizing the data on a monthly basis.</p>
 containing sites that are measuring well water level, and the average
 change in well water level from month to month:</p>
 <p><img src="images%2Fmonthly_basin_averagesExample.png"></p>
+<p>After Running CleanWells() you should also create a UniqueDivides
+dateframe</p>
+<p>This will be used in the next function as well.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#  UniqueDivides &lt;- monthly_basin_average %&gt;%</span></span>
+<span><span class="co">#    distinct(Divide)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="change-in-storage-from-the-model">Change In Storage From the Model<a class="anchor" aria-label="anchor" href="#change-in-storage-from-the-model"></a>
@@ -156,7 +164,7 @@ correlation statistics, and prepares the data for further analysis.</p>
 <p>Correlation() copies “model_correlation_by_divide” to the package
 environment, this will feed straight into ModelCorrMap(). You will still
 need the scatterplot from ModelScatter() though so don’t skip ahead.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#cabcm_dangermond_join &lt;- Correlation(x = cabcm_delta_str, y = monthly_basin_average)</span></span></code></pre></div>
 <p>The output should look like this, it even adds convenient plot
 titles!</p>
@@ -167,7 +175,7 @@ fancy.</p>
 <p>Plot_WWLvsSTR() does exactly what you think it will. It plots the
 change in well water level “mean_change_mm” against deltaSTR from your
 model data.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Cabcm_Plot &lt;- Plot_WWLvsSTR(x = cabcm_dangermond_join)</span></span></code></pre></div>
 <p><img src="images%2FWWLvsSTR_Example.png"></p>
 <p>This is a great visualization of the accuracy of the model to the
@@ -182,7 +190,7 @@ visual aid.</p>
 </h4>
 <p>ModelScatter() uses the same data as above, but makes a scatterplot
 instead.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#ModelScatterPlot &lt;- ModelScatter(x = cabcm_dangermond_join)</span></span></code></pre></div>
 <p><img src="images%2FModelScatter_Example.png"></p>
 <p>This is good, it shows us the general shape of the data and the
@@ -191,7 +199,7 @@ relate spatially to our basin?</p>
 <p>ModelCorrMap() uses model_correlation_by_divide, which is an output
 of Correlation() along with the scatter plot we just produced to create
 a side-by-side plot of the two.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Corr_Map &lt;- ModelCorrMap(x = model_correlation_by_divide, y = ModelScatterPlot)</span></span></code></pre></div>
 <p><img src="images%2FCorrPlotExample.png"></p>
 </div>

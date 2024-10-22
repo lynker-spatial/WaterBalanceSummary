@@ -78,13 +78,13 @@ point.</p>
 <strong>Creating WaterBalance and Percent Error By Season
 Plots</strong><a class="anchor" aria-label="anchor" href="#creating-waterbalance-and-percent-error-by-season-plots"></a>
 </h2>
-</div>
-<div class="section level2">
-<h2 id="set-aws-credentials">
+<div class="section level5">
+<h5 id="set-aws-credentials">
 <strong>Set AWS Credentials</strong><a class="anchor" aria-label="anchor" href="#set-aws-credentials"></a>
-</h2>
+</h5>
 <p>The first step will be to set AWS Credentials Globally so that you
 can access the data held in the tnc-dangermond bucket.</p>
+</div>
 <div class="section level5">
 <h5 id="define-the-theme">
 <strong>Define the Theme</strong><a class="anchor" aria-label="anchor" href="#define-the-theme"></a>
@@ -279,6 +279,8 @@ balance_data() below</p>
 <h5 id="balance-data">
 <strong>Balance Data()</strong><a class="anchor" aria-label="anchor" href="#balance-data"></a>
 </h5>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#cabcm_long_balance &lt;- balance_data(cabcm_data_wide)</span></span></code></pre></div>
 <p>balance_data() relies on terra_ or cabcm_data_wide from the
 process_data() function above. It formats the data so that it can be
 used to create the Water Balance Plots.</p>
@@ -292,8 +294,8 @@ used to create the Water Balance Plots.</p>
 <p>CreateWaterBalancePlot() uses the output of balance_data(), terra_ or
 cabcm_long_balance, and creates a water balance plot comparing the
 inputs and outputs of the system.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#combined_plot &lt;- CreateWaterBalancePlot(x = terra_long_balance)</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#combined_plot &lt;- CreateWaterBalancePlot(x = cabcm_long_balance)</span></span></code></pre></div>
 <p><img src="images%2FExampleBalancePlot.png"></p>
 </div>
 </div>
