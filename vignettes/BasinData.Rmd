@@ -114,8 +114,8 @@ dateframe
 This will be used in the next function as well.
 
 ```{r}
-  UniqueDivides <- monthly_basin_average %>%
-    distinct(Divide)
+#  UniqueDivides <- monthly_basin_average %>%
+#    distinct(Divide)
 ```
 
 ### Change In Storage From the Model
