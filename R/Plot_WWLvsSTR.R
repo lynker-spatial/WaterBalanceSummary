@@ -34,7 +34,7 @@ SiteLocations <- station_id_dendra <- elev <- SiteName <- mean_change_mm <- delt
     geom_col(data = filter(x, mean_change_mm >= 0),
              mapping = aes(x = date, y = mean_change_mm, fill = "Recharge"), color = "#039dfc")+
     geom_col(data = filter(x, deltaSTR >= 0),
-             mapping = aes(x = date, y = deltaSTR, fill = "Delta STR"), alpha = .8)+
+             mapping = aes(x = date, y = deltaSTR, fill = "Delta STR (model)"), alpha = .8)+
     facet_wrap(~Divide, ncol = 5, scales = "free_y")+
     labs(title = "Well Water Level vs. Recharge 2009 - 2018",
          subtitle = subtitle,

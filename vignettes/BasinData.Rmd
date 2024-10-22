@@ -31,7 +31,7 @@ Until that point, this document will refer to CABCM and TerraClim data
 with the implication that NextGen could be substituted for either at any
 point.
 
-# **Comparing Model and Observed Soil Moisture, Correlating the two, Producing plots and maps for visualization.**
+# **Comparing Model and Observed Soil Moisture, correlating the two, producing plots and maps for visualization.**
 
 This workflow assumes access to the tnc-dangermond bucket and its
 folders which contain the updated site data for the Dangermond Preserve.
@@ -70,10 +70,11 @@ divides with all the sites that they contain.
 
 The TNC Site names get wonky so replacing any spaces with underscores,
 filtering out NA values, and just pulling out the Site and Divide (to be
-used later) fields will help.
+used later) fields will help. Active Divides will be used in the
+CleanWells() function below.
 
 Additionally, creating a SiteBasins df that is just the distinct Basin
-IDs is necessary for the pull. This will be fixed in a later update
+IDs is necessary if you want to pull well data from the TNC Bucket.
 
 ```{r}
 ##Join Divides and Sites
@@ -93,6 +94,11 @@ IDs is necessary for the pull. This will be fixed in a later update
 
 CleanWells()
 
+For this example I will be using "all_combined_data" which is compiled
+from the TNC Sensor data at the Jack and Laura Dangermond Preserve. If
+you have the correct credentials you can pull this data as well, to do
+so you will need the SiteBasins df created above.
+
 ```{r}
 #monthly_basin_average <- CleanWells(x = all_combined_data, y = ActiveDivides)
 ```
@@ -100,7 +106,8 @@ CleanWells()
 This function filters, transforms, and processes well water level data
 from a combined dataset. It prepares the data for mapping and analysis
 by calculating changes in well water levels, joining with basin
-information, and summarizing the data on a monthly basis.
+information from ActiveDivides, and summarizing the data on a monthly
+basis.
 
 The output should look like this, time series data for all divides
 containing sites that are measuring well water level, and the average
@@ -123,33 +130,36 @@ This will be used in the next function as well.
 Now that we have the site data, we can use the (model)\_delta_str file
 from the WaterBalance workflow and compare the two.
 
-The JoinHydroData() function merges well water level data with streamflow data for further analysis. The streamflow data is filtered to include only non-negative values and specific date ranges. The function limits the data to basins present in the `UniqueDivides` dataset.
+#### Join Hydro Data
 
-
-CRITICAL:
-
-Correlation() copies "model_correlation_by_divide" to the package
-environment, this will feed straight into ModelCorrMap(). You will still
-need the scatterplot from ModelScatter() though so don't skip ahead.
+The JoinHydroData() function merges well water level data with change in
+storage data from our models for further analysis. The storage data is
+filtered to include only non-negative values and specific date ranges.
+The function limits the data to basins present in the `UniqueDivides`
+dataset.
 
 ```{r}
-#cabcm_dangermond_join <- JoinHydroData(x = cabcm_delta_str, y = monthly_basin_average, y = UniqueDivides)
+#cabcm_dangermond_join <- JoinHydroData(x = cabcm_delta_str, y = monthly_basin_average, z = UniqueDivides)
 
 ```
 
-Next you can use the Correlation() function, which computes the correlation between changes in well water levels and streamflow for each divide (basin). It calculates standard deviations of well water levels and streamflow, computes correlation coefficients, and merges these correlations back into the original dataset.
+#### Correlation
+
+Next you can use the Correlation() function, which computes the
+correlation between changes in well water levels and modelled change in
+storage for each divide (basin). It calculates standard deviations of
+well water levels and storage, computes correlation coefficients, and
+merges these correlations back into the original dataset.
 
 ```{r}
 #cabcm_corr_join <- Correlation(x = cabcm_dangermond_join)
 ```
 
-
 The output should look like this, it even adds convenient plot titles!
 
 ![](images/CorrelationExample.png)
 
-I've called this dataframe cabcm_corr_join, no need to get too
-fancy.
+I've called this dataframe "cabcm_corr_join", no need to get too fancy.
 
 Now that our data is looking good we can finally make some plots
 
@@ -158,7 +168,7 @@ in well water level "mean_change_mm" against deltaSTR from your model
 data.
 
 ```{r}
-#cabcm_Plot <- Plot_WWLvsSTR(x = cabcm_dangermond_join)
+#cabcm_Plot <- Plot_WWLvsSTR(x = cabcm_corr_join)
 
 #cabcm_Plot
 ```
@@ -180,6 +190,8 @@ instead.
 
 ```{r}
 #ModelScatterPlot <- ModelScatter(x = cabcm_corr_join)
+
+#ModelScatterPlot
 ```
 
 ![](images/ModelScatter_Example.png)
@@ -193,7 +205,7 @@ Correlation() along with the scatter plot we just produced to create a
 side-by-side plot of the two.
 
 ```{r}
-#Corr_Map <- ModelCorrMap(x = model_correlation_by_divide, y = ModelScatterPlot)
+#Corr_Map <- ModelCorrMap(x = cabcm_corr_join, y = ModelScatterPlot, z = NewDivides)
 ```
 
 ![](images/CorrPlotExample.png)
