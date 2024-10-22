@@ -37,6 +37,12 @@
     <loc>/reference/CreateWaterBalancePlot.html</loc>
   </url>
   <url>
+    <loc>/reference/GridSeasons.html</loc>
+  </url>
+  <url>
+    <loc>/reference/JoinHydroData.html</loc>
+  </url>
+  <url>
     <loc>/reference/ModelCorrMap.html</loc>
   </url>
   <url>
@@ -77,5 +83,8 @@
   </url>
   <url>
     <loc>/reference/theme_pers.html</loc>
+  </url>
+  <url>
+    <loc>/reference/widen_model_data.html</loc>
   </url>
 </urlset>

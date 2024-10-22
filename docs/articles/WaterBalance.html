@@ -91,13 +91,13 @@ point.</p>
 <strong>Creating WaterBalance and Percent Error By Season
 Plots</strong><a class="anchor" aria-label="anchor" href="#creating-waterbalance-and-percent-error-by-season-plots"></a>
 </h2>
-</div>
-<div class="section level2">
-<h2 id="set-aws-credentials">
+<div class="section level5">
+<h5 id="set-aws-credentials">
 <strong>Set AWS Credentials</strong><a class="anchor" aria-label="anchor" href="#set-aws-credentials"></a>
-</h2>
+</h5>
 <p>The first step will be to set AWS Credentials Globally so that you
 can access the data held in the tnc-dangermond bucket.</p>
+</div>
 <div class="section level5">
 <h5 id="define-the-theme">
 <strong>Define the Theme</strong><a class="anchor" aria-label="anchor" href="#define-the-theme"></a>
@@ -210,10 +210,10 @@ convert this from total storage to the change in storage between two
 time steps.</p>
 <p>model_clean() separates out the soil moisture storage “str” from the
 “var” field and calculates day to day change in storage before joining
-that data back into the primary dataset for analysis. The output is
-cabcm_delta_str or terra_delta_str.</p>
+that data back into the primary dataset for analysis. Assign your ouput
+to [model name]_delta_str</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#model_clean(new_cabcm_data)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#cabcm_delta_str &lt;- model_clean(new_cabcm_data)</span></span></code></pre></div>
 <p>From this:</p>
 <p><img src="images/new_cabcm_data.png" width="425"></p>
 <p>To this:</p>
@@ -230,7 +230,9 @@ Moisture Storage, we can better balance our system by finding error with
 the following equation.</p>
 <p>ERR = ppt - aet - rch - run - str</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#result_cabcm &lt;- process_model_data(cabcm_delta_str, NewDivides)</span></span></code></pre></div>
+<code class="sourceCode R"><span></span>
+<span></span>
+<span><span class="co">#result_cabcm &lt;- process_model_data(cabcm_delta_str, NewDivides)</span></span></code></pre></div>
 <p>The process_model_data() function does this and more.</p>
 <p>It widens the dataframe, calculates the error for each timestamp,
 assigns seasons based on month, calculates average error per season, and
@@ -240,10 +242,6 @@ split into four seasonal datasets. The final output is a list containing
 seasonal data that can be used for generating Percent Error Plots based
 on the season.</p>
 <p><img src="images/result_data.png"></p>
-<p>In addition to prepping the data for Seasonal Error plot, the
-function assigns the widened data, such as “cabcm_data_wide” to the
-global environment to be used in the balance_data() function below and
-create our water balance plots.</p>
 </div>
 <div class="section level5">
 <h5 id="plot-seasons">
@@ -252,7 +250,7 @@ create our water balance plots.</p>
 <p>plot_seasons() generates standardized plots for based on the above
 seasonal data. The plots visualize the percent error across different
 spatial features for a given season. This function is designed to be
-used within the <code>GridSeasons()</code> function to arrange the plots
+used within the <code><a href="../reference/GridSeasons.html">GridSeasons()</a></code> function to arrange the plots
 in a grid layout.</p>
 <p>You can customize it as suits you, but I have found this format to be
 very appealing visually.</p>
@@ -281,12 +279,21 @@ very appealing visually.</p>
 output from <code><a href="../reference/process_model_data.html">process_model_data()</a></code> and customizes the plot
 titles and captions based on the data source, be it CABCM, Terra, or
 (pending) NextGen</p>
-<p><img src="images/ExampleSeasonPlot.png"></p>
+<p><img src="images/ExampleSeasonPlot.png"> ### <strong>Wide
+Data()</strong> We need to make the data wide before we can balance it
+and use it to create our water balance plot. This can be done with the
+widen_model_data() function</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#cabcm_data_wide &lt;- widen_model_data(cabcm_delta_str)</span></span></code></pre></div>
+<p>use cabcm_delta_str as the x value and feed the output right into
+balance_data() below</p>
 </div>
 <div class="section level5">
 <h5 id="balance-data">
 <strong>Balance Data()</strong><a class="anchor" aria-label="anchor" href="#balance-data"></a>
 </h5>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#cabcm_long_balance &lt;- balance_data(cabcm_data_wide)</span></span></code></pre></div>
 <p>balance_data() relies on terra_ or cabcm_data_wide from the
 process_data() function above. It formats the data so that it can be
 used to create the Water Balance Plots.</p>
@@ -300,8 +307,8 @@ used to create the Water Balance Plots.</p>
 <p>CreateWaterBalancePlot() uses the output of balance_data(), terra_ or
 cabcm_long_balance, and creates a water balance plot comparing the
 inputs and outputs of the system.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#combined_plot &lt;- CreateWaterBalancePlot(x = terra_long_balance)</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#combined_plot &lt;- CreateWaterBalancePlot(x = cabcm_long_balance)</span></span></code></pre></div>
 <p><img src="images/ExampleBalancePlot.png"></p>
 </div>
 </div>
@@ -312,7 +319,7 @@ inputs and outputs of the system.</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by <a href="https://wamclean.github.io/" class="external-link">Billy McLean</a>, TNC, <a href="https://lynker-spatial.com/" class="external-link"><img src="reference/figures/Lynker-Logo.png" width="100" alt="Lynker"></a>.</p>
+  <p>Developed by <a href="https://wamclean.github.io/" class="external-link">Billy McLean</a>, <a href="https://www.nature.org/en-us/" class="external-link"><img src="reference/figures/TNCLogo.png" width="100" alt="TNC"></a>, <a href="https://lynker-spatial.com/" class="external-link"><img src="reference/figures/Lynker-Logo.png" width="100" alt="Lynker"></a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
