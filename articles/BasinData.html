@@ -156,27 +156,37 @@ dateframe</p>
 </h4>
 <p>Now that we have the site data, we can use the (model)_delta_str file
 from the WaterBalance workflow and compare the two.</p>
-<p>The Correlation() function calculates the correlation between well
-water level changes and storage changes (e.g., from cabcm_ or
-terra_delta_str) for different basins. It joins the data, computes
-correlation statistics, and prepares the data for further analysis.</p>
+<p>The JoinHydroData() function merges well water level data with
+streamflow data for further analysis. The streamflow data is filtered to
+include only non-negative values and specific date ranges. The function
+limits the data to basins present in the <code>UniqueDivides</code>
+dataset.</p>
 <p>CRITICAL:</p>
 <p>Correlation() copies “model_correlation_by_divide” to the package
 environment, this will feed straight into ModelCorrMap(). You will still
 need the scatterplot from ModelScatter() though so don’t skip ahead.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#cabcm_dangermond_join &lt;- Correlation(x = cabcm_delta_str, y = monthly_basin_average)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#cabcm_dangermond_join &lt;- JoinHydroData(x = cabcm_delta_str, y = monthly_basin_average, y = UniqueDivides)</span></span></code></pre></div>
+<p>Next you can use the Correlation() function, which computes the
+correlation between changes in well water levels and streamflow for each
+divide (basin). It calculates standard deviations of well water levels
+and streamflow, computes correlation coefficients, and merges these
+correlations back into the original dataset.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#cabcm_corr_join &lt;- Correlation(x = cabcm_dangermond_join)</span></span></code></pre></div>
 <p>The output should look like this, it even adds convenient plot
 titles!</p>
 <p><img src="images%2FCorrelationExample.png"></p>
-<p>I’ve called this dataframe cabcm_dangermond_join, no need to get too
+<p>I’ve called this dataframe cabcm_corr_join, no need to get too
 fancy.</p>
 <p>Now that our data is looking good we can finally make some plots</p>
 <p>Plot_WWLvsSTR() does exactly what you think it will. It plots the
 change in well water level “mean_change_mm” against deltaSTR from your
 model data.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#Cabcm_Plot &lt;- Plot_WWLvsSTR(x = cabcm_dangermond_join)</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#cabcm_Plot &lt;- Plot_WWLvsSTR(x = cabcm_dangermond_join)</span></span>
+<span></span>
+<span><span class="co">#cabcm_Plot</span></span></code></pre></div>
 <p><img src="images%2FWWLvsSTR_Example.png"></p>
 <p>This is a great visualization of the accuracy of the model to the
 basin in terms of both timing and magnitude of changes in well water
@@ -190,8 +200,8 @@ visual aid.</p>
 </h4>
 <p>ModelScatter() uses the same data as above, but makes a scatterplot
 instead.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#ModelScatterPlot &lt;- ModelScatter(x = cabcm_dangermond_join)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">#ModelScatterPlot &lt;- ModelScatter(x = cabcm_corr_join)</span></span></code></pre></div>
 <p><img src="images%2FModelScatter_Example.png"></p>
 <p>This is good, it shows us the general shape of the data and the
 correlation is easily visible as part of the title. But how does it
@@ -199,7 +209,7 @@ relate spatially to our basin?</p>
 <p>ModelCorrMap() uses model_correlation_by_divide, which is an output
 of Correlation() along with the scatter plot we just produced to create
 a side-by-side plot of the two.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Corr_Map &lt;- ModelCorrMap(x = model_correlation_by_divide, y = ModelScatterPlot)</span></span></code></pre></div>
 <p><img src="images%2FCorrPlotExample.png"></p>
 </div>
