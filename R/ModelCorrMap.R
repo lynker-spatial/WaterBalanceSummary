@@ -55,7 +55,8 @@ ModelCorrMap <- function(x, y = ModelScatterPlot, z = NewDivides){
   
   #Get centroids of divides
   corr_divides_centroids <- st_centroid(corr_divides) %>% 
-    st_as_sf()
+    st_as_sf() %>% 
+    distinct(Divide, .keep_all = TRUE)
   
   #assign("corr_divides_centroids", corr_divides_centroids, envir = .GlobalEnv)
   
