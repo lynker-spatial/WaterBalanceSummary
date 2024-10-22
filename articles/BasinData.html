@@ -77,8 +77,8 @@ with the implication that NextGen could be substituted for either at any
 point.</p>
 <div class="section level2">
 <h2 id="comparing-model-and-observed-soil-moisture-correlating-the-two-producing-plots-and-maps-for-visualization-">
-<strong>Comparing Model and Observed Soil Moisture, Correlating the
-two, Producing plots and maps for visualization.</strong><a class="anchor" aria-label="anchor" href="#comparing-model-and-observed-soil-moisture-correlating-the-two-producing-plots-and-maps-for-visualization-"></a>
+<strong>Comparing Model and Observed Soil Moisture, correlating the
+two, producing plots and maps for visualization.</strong><a class="anchor" aria-label="anchor" href="#comparing-model-and-observed-soil-moisture-correlating-the-two-producing-plots-and-maps-for-visualization-"></a>
 </h2>
 <p>This workflow assumes access to the tnc-dangermond bucket and its
 folders which contain the updated site data for the Dangermond
@@ -113,10 +113,11 @@ divides with all the sites that they contain.</p>
 </h5>
 <p>The TNC Site names get wonky so replacing any spaces with
 underscores, filtering out NA values, and just pulling out the Site and
-Divide (to be used later) fields will help.</p>
+Divide (to be used later) fields will help. Active Divides will be used
+in the CleanWells() function below.</p>
 <p>Additionally, creating a SiteBasins df that is just the distinct
-Basin IDs is necessary for the pull. This will be fixed in a later
-update</p>
+Basin IDs is necessary if you want to pull well data from the TNC
+Bucket.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">##Join Divides and Sites</span></span>
 <span><span class="co">#ActiveDivides &lt;- dangermond_sites %&gt;% </span></span>
@@ -134,12 +135,17 @@ update</p>
 <h4 id="clean-well-data">Clean Well Data<a class="anchor" aria-label="anchor" href="#clean-well-data"></a>
 </h4>
 <p>CleanWells()</p>
+<p>For this example I will be using “all_combined_data” which is
+compiled from the TNC Sensor data at the Jack and Laura Dangermond
+Preserve. If you have the correct credentials you can pull this data as
+well, to do so you will need the SiteBasins df created above.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#monthly_basin_average &lt;- CleanWells(x = all_combined_data, y = ActiveDivides)</span></span></code></pre></div>
 <p>This function filters, transforms, and processes well water level
 data from a combined dataset. It prepares the data for mapping and
 analysis by calculating changes in well water levels, joining with basin
-information, and summarizing the data on a monthly basis.</p>
+information from ActiveDivides, and summarizing the data on a monthly
+basis.</p>
 <p>The output should look like this, time series data for all divides
 containing sites that are measuring well water level, and the average
 change in well water level from month to month:</p>
@@ -156,35 +162,38 @@ dateframe</p>
 </h4>
 <p>Now that we have the site data, we can use the (model)_delta_str file
 from the WaterBalance workflow and compare the two.</p>
-<p>The JoinHydroData() function merges well water level data with
-streamflow data for further analysis. The streamflow data is filtered to
-include only non-negative values and specific date ranges. The function
-limits the data to basins present in the <code>UniqueDivides</code>
-dataset.</p>
-<p>CRITICAL:</p>
-<p>Correlation() copies “model_correlation_by_divide” to the package
-environment, this will feed straight into ModelCorrMap(). You will still
-need the scatterplot from ModelScatter() though so don’t skip ahead.</p>
+<div class="section level5">
+<h5 id="join-hydro-data">Join Hydro Data<a class="anchor" aria-label="anchor" href="#join-hydro-data"></a>
+</h5>
+<p>The JoinHydroData() function merges well water level data with change
+in storage data from our models for further analysis. The storage data
+is filtered to include only non-negative values and specific date
+ranges. The function limits the data to basins present in the
+<code>UniqueDivides</code> dataset.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#cabcm_dangermond_join &lt;- JoinHydroData(x = cabcm_delta_str, y = monthly_basin_average, y = UniqueDivides)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#cabcm_dangermond_join &lt;- JoinHydroData(x = cabcm_delta_str, y = monthly_basin_average, z = UniqueDivides)</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="correlation">Correlation<a class="anchor" aria-label="anchor" href="#correlation"></a>
+</h5>
 <p>Next you can use the Correlation() function, which computes the
-correlation between changes in well water levels and streamflow for each
-divide (basin). It calculates standard deviations of well water levels
-and streamflow, computes correlation coefficients, and merges these
-correlations back into the original dataset.</p>
+correlation between changes in well water levels and modelled change in
+storage for each divide (basin). It calculates standard deviations of
+well water levels and storage, computes correlation coefficients, and
+merges these correlations back into the original dataset.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#cabcm_corr_join &lt;- Correlation(x = cabcm_dangermond_join)</span></span></code></pre></div>
 <p>The output should look like this, it even adds convenient plot
 titles!</p>
 <p><img src="images%2FCorrelationExample.png"></p>
-<p>I’ve called this dataframe cabcm_corr_join, no need to get too
+<p>I’ve called this dataframe “cabcm_corr_join”, no need to get too
 fancy.</p>
 <p>Now that our data is looking good we can finally make some plots</p>
 <p>Plot_WWLvsSTR() does exactly what you think it will. It plots the
 change in well water level “mean_change_mm” against deltaSTR from your
 model data.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#cabcm_Plot &lt;- Plot_WWLvsSTR(x = cabcm_dangermond_join)</span></span>
+<code class="sourceCode R"><span><span class="co">#cabcm_Plot &lt;- Plot_WWLvsSTR(x = cabcm_corr_join)</span></span>
 <span></span>
 <span><span class="co">#cabcm_Plot</span></span></code></pre></div>
 <p><img src="images%2FWWLvsSTR_Example.png"></p>
@@ -195,13 +204,16 @@ level vs modeled changes in soil moisture.</p>
 and we can then attach that to a map to make it an even more powerful
 visual aid.</p>
 </div>
+</div>
 <div class="section level4">
 <h4 id="modelscatter">ModelScatter()<a class="anchor" aria-label="anchor" href="#modelscatter"></a>
 </h4>
 <p>ModelScatter() uses the same data as above, but makes a scatterplot
 instead.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#ModelScatterPlot &lt;- ModelScatter(x = cabcm_corr_join)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#ModelScatterPlot &lt;- ModelScatter(x = cabcm_corr_join)</span></span>
+<span></span>
+<span><span class="co">#ModelScatterPlot</span></span></code></pre></div>
 <p><img src="images%2FModelScatter_Example.png"></p>
 <p>This is good, it shows us the general shape of the data and the
 correlation is easily visible as part of the title. But how does it
@@ -210,7 +222,7 @@ relate spatially to our basin?</p>
 of Correlation() along with the scatter plot we just produced to create
 a side-by-side plot of the two.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#Corr_Map &lt;- ModelCorrMap(x = model_correlation_by_divide, y = ModelScatterPlot)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">#Corr_Map &lt;- ModelCorrMap(x = cabcm_corr_join, y = ModelScatterPlot, z = NewDivides)</span></span></code></pre></div>
 <p><img src="images%2FCorrPlotExample.png"></p>
 </div>
 </div>
